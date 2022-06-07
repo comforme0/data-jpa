@@ -1,6 +1,5 @@
 package study.datajpa.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,6 @@ import study.datajpa.entity.Member;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -25,10 +23,16 @@ class MemberRepositoryTest {
         Member member = new Member("memberA");
         Member saveMember = memberRepository.save(member);
 
-        Member findMember = memberRepository.findById(saveMember.getId()).get();
+        Optional<Member> byId = memberRepository.findById(saveMember.getId());
 
-        assertThat(findMember.getId()).isEqualTo(member.getId());
-        assertThat(findMember.getId()).isEqualTo(member.getId());
+        if (byId.isPresent()) {
+            Member findMember = byId.get();
+
+            assertThat(findMember.getId()).isEqualTo(member.getId());
+            assertThat(findMember.getId()).isEqualTo(member.getId());
+        }
+
+
 
     }
 }
